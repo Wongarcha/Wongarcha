@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'SITE_71_QR_CODE_VALUE': 'ตึก B1-7',
         'SITE_72_QR_CODE_VALUE': 'ตึก B1-8',
         'SITE_73_QR_CODE_VALUE': 'ตึก B2-1',
-        'SITE_74_QR_CODE_VALUE': 'ตึก B2-2',
+        'SITE_74_CODE_VALUE': 'ตึก B2-2',
         'SITE_75_QR_CODE_VALUE': 'ตึก B2-3',
         'SITE_76_QR_CODE_VALUE': 'ตึก B2-4',
         'SITE_77_QR_CODE_VALUE': 'ตึก B2-5',
@@ -199,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
         'SITE_182_QR_CODE_VALUE': 'ตึก C5-6',
         'SITE_183_QR_CODE_VALUE': 'ตึก C5-7',
         'SITE_184_QR_CODE_VALUE': 'ตึก C5-8',
-
     };
 
     startButton.addEventListener('click', () => {
@@ -251,18 +250,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = {};
         formData.forEach((value, key) => (data["report_" + key] = value));
 
+        // ส่งข้อมูลไปยัง Google Apps Script โดยไม่ต้องรอการตอบกลับ
         fetch(googleAppsScriptURL, {
             method: 'POST',
             body: JSON.stringify(data),
             mode: 'no-cors'
-        })
-            .then(() => {
-                alert('รายงานถูกส่งเรียบร้อยแล้ว!');
-                window.location.reload();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('เกิดข้อผิดพลาดในการส่งข้อมูล');
-            });
+        });
+
+        // แสดงข้อความและกลับหน้าหลักทันที
+        alert('กำลังส่งข้อมูล...');
+        
+        form.reset();
+        document.getElementById('imagePreview').innerHTML = '';
+        form.style.display = 'none';
+        startButton.style.display = 'block';
     });
 });
